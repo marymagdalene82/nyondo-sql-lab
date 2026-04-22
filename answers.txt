@@ -50,3 +50,77 @@ INSERT INTO products (name, description, price) VALUES
 (5, 'Timber 2x4', 'Pine timber plank 2x4 per metre', 25000.0)
 
 5. screenshots/answers.txt
+
+Task 2
+// General database connection
+conn = sqlite3.connect('nyondo_stock.db')
+A 
+
+rows = conn.execute('SELECT * FROM products').fetchall()
+for r in rows: print(r)
+
+Output
+(1, 'Cement (bag)', 'Portland cement 50kg bag', 35000.0)
+(2, 'Iron Sheet 3m', 'Gauge 30 roofing sheet 3m long', 110000.0)
+(3, 'Paint 5L', 'Exterior wall paint white 5L', 60000.0)
+(4, 'Nails 1kg', 'Common wire nails 1kg pack', 12000.0)
+(5, 'Timber 2x4', 'Pine timber plank 2x4 per metre', 25000.0)
+
+B
+rows = conn.execute('SELECT name, price FROM products').fetchall()
+for r in rows: print(r)
+
+Output
+('Cement (bag)', 35000.0)
+('Iron Sheet 3m', 110000.0)
+('Paint 5L', 60000.0)
+('Nails 1kg', 12000.0)
+('Timber 2x4', 25000.0)
+
+C
+rows = conn.execute('SELECT * FROM products WHERE id = 3').fetchall()
+for r in rows: print(r)
+
+Output
+(3, 'Paint 5L', 'Exterior wall paint white 5L', 60000.0)
+
+D
+rows = conn.execute("SELECT * FROM products WHERE name LIKE '%sheet%'").fetchall()
+for r in rows: print(r)
+
+Output
+(2, 'Iron Sheet 3m', 'Gauge 30 roofing sheet 3m long', 110000.0)
+
+E
+rows = conn.execute('SELECT * FROM products ORDER BY price DESC').fetchall()
+for r in rows: print(r)
+
+Output
+(2, 'Iron Sheet 3m', 'Gauge 30 roofing sheet 3m long', 110000.0)
+(3, 'Paint 5L', 'Exterior wall paint white 5L', 60000.0)
+(1, 'Cement (bag)', 'Portland cement 50kg bag', 35000.0)
+(5, 'Timber 2x4', 'Pine timber plank 2x4 per metre', 25000.0)
+(4, 'Nails 1kg', 'Common wire nails 1kg pack', 12000.0)
+
+F
+rows = conn.execute('SELECT * FROM products ORDER BY price DESC LIMIT 2').fetchall()
+for r in rows: print(r)
+
+Output
+(2, 'Iron Sheet 3m', 'Gauge 30 roofing sheet 3m long', 110000.0)
+(3, 'Paint 5L', 'Exterior wall paint white 5L', 60000.0)
+
+G
+conn.execute('UPDATE products SET price = 38000 WHERE id = 1')
+rows = conn.execute('SELECT * FROM products').fetchall()
+for r in rows: print(r)
+
+Output
+(1, 'Cement (bag)', 'Portland cement 50kg bag', 38000.0)
+(2, 'Iron Sheet 3m', 'Gauge 30 roofing sheet 3m long', 110000.0)
+(3, 'Paint 5L', 'Exterior wall paint white 5L', 60000.0)
+(4, 'Nails 1kg', 'Common wire nails 1kg pack', 12000.0)
+(5, 'Timber 2x4', 'Pine timber plank 2x4 per metre', 25000.0)
+
+screenshots/task2.png
+
