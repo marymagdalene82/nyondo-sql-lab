@@ -192,3 +192,45 @@ screenshots/task3_attack1.png
 screenshots/task3_attack2.png
 screenshots/task3_attack3.png
 screenshots/task3_attack4.png
+
+Task 4
+import sqlite3
+conn = sqlite3.connect('nyondo_stock.db')
+
+# TODO: rewrite using ? placeholder - never use f-strings in SQL
+def search_product_safe(name):
+# your code here
+    query = 'SELECT * FROM products WHERE name LIKE ?'
+    rows = conn.execute(query,(f'%{name}%',)).fetchall()
+    return rows
+
+def login_safe(username, password):
+# your code here
+    query = 'SELECT * FROM users WHERE username = ? AND password= ?'
+    row = conn.execute(query,(username, password)).fetchone()
+    return row
+
+# These must ALL return [] or None when you run them
+print('Test 1:', search_product_safe("' OR 1=1--"))
+print('Test 2:', search_product_safe("' UNION SELECT id,username,password,role FROM users--"))
+print('Test 3:', login_safe("admin'--", 'anything'))
+print('Test 4:', login_safe("' OR '1'='1", "' OR '1'='1"))
+
+2.
+Test 1: [] -injection payload treated as literal text, no product named "' OR 1=1--"
+Test 2: [] -UNION attack treated as literal text
+Test 3: None -comment attack treated as literal text
+Test 4: None -always-true attack treated as literal
+
+3.WHY does using ?
+prevent injection? What is the difference between an f-string and a parameterised query at the database
+level?
+The core principle is that with parameterised queries, the SQL structure and the data travel to the database engine separately. The database compiles the SQL first (deciding what it will do), then plugs in the data values. The data can never change the structure of the query.
+
+With f-string, user input is part of the SQL whereas for parameterised query, user input is separate data
+Database sees one mixed string in f-string while	Database sees SQL structure and data separately in parameterised query.
+
+f-string = handing someone a blank piece of paper and saying "write whatever you want" — they could write anything, including new instructions.
+Parameterised query = handing someone a pre-printed form with fixed boxes — they can only fill in the boxes, not change the form itself.
+
+screenshots/task4
